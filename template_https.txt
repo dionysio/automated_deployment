@@ -1,0 +1,10 @@
+<VirtualHost *:{https_port}>
+    Include {apache_dir}/sites-available/{project}_common.conf
+    Include {apache_dir}/sites-available/options-ssl-apache.conf
+
+    Protocols {http2} http/1.1
+
+    SSLCertificateFile {letsencrypt_dir}/cert.pem
+    SSLCertificateKeyFile {letsencrypt_dir}/privkey.pem
+    SSLCertificateChainFile {letsencrypt_dir}/chain.pem
+</VirtualHost>

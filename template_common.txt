@@ -1,0 +1,25 @@
+ServerName www.{domain}
+ServerAlias {domain}
+WSGIProcessGroup {domain}
+WSGIScriptAlias / {www_dir}/{project}/wsgi.py
+
+<Directory {www_dir}/{project}/>
+    <Files wsgi.py>
+        Require all granted
+    </Files>
+</Directory>
+
+Alias /static/ {www_dir}/{project}/static/
+<Directory {www_dir}/{project}/static/>
+    Require all granted
+</Directory>
+
+Alias /media/ {www_dir}/{project}/media/
+<Directory {www_dir}/{project}/media/>
+    Require all granted
+</Directory>
+
+Alias /.well-known/acme-challenge/ {www_dir}/{project}/.well-known/acme-challenge/
+<Directory {www_dir}/{project}/.well-known/acme-challenge>
+    Require all granted
+</Directory>

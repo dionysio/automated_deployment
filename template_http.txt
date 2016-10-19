@@ -1,0 +1,5 @@
+<VirtualHost *:{http_port}>
+    Include {apache_dir}/sites-available/{project}_common.conf
+    WSGIDaemonProcess {domain} python-path={project_path}:{virtualenv}
+    Protocols {http2c} http/1.1
+</VirtualHost>
