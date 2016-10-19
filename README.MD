@@ -1,7 +1,8 @@
 # Python-based automated deployment scripts
 
-This is a simple collection of scripts for deployment customized for my use (Django+Apache+LetsEncrypt).
-I felt like Puppet/Chef was a overkill for my use-case, so I cobbled this together. Hopefully it will be useful for someone.
+This is a simple collection of scripts for automated deployment specifically for my use case (Django+Apache+LetsEncrypt).
+I am currently running this setup with Apache 2.4.23, LetsEncrypt certbot 0.9.3, git-crypt 0.5.0.
+I felt like Puppet/Chef was a bit overkill, so I cobbled this together. Hopefully it will be useful to someone!
 
 
 ## Pipeline
@@ -18,6 +19,13 @@ Default pipeline is:
 9. enable_http_site
 10. letsencrypt_https ~optional
 11. enable_https_site ~optional
+
+Optional items get executed only when they are needed/forced with --reinit. 
+Git_unlock uses [git-crypt](https://github.com/AGWA/git-crypt) to unlock the repo.
+The default apache config templates are available at:
+* [common template](template_common.txt) which both http and https inherit from
+* [http template](template_http.txt) specifically for http virtual host
+* [https_template](tempate_https.txt) specifically for https virtual host
 
 
 ## Usage
