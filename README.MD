@@ -3,8 +3,10 @@
 This is a simple collection of scripts for deployment customized for my use (Django+Apache+LetsEncrypt).
 I felt like Puppet/Chef was a overkill for my use-case, so I cobbled this together. Hopefully it will be useful for someone.
 
+
 ## Pipeline
 Default pipeline is: 
+
 1. git_clone ~optional
 2. git_update
 3. git_unlock ~optional
@@ -18,22 +20,23 @@ Default pipeline is:
 11. enable_https_site ~optional
 
 
-
 ## Usage
 You need sudo privileges to run this.
 
 ```bash
 $ sudo python deploy.py
-usage: deploy.py [-h] [--http_port HTTP_PORT] [--https]
-                 [--https_port HTTPS_PORT] [--letsencrypt_dir LETSENCRYPT_DIR]
+usage: deploy.py [-h] [--http_port HTTP_PORT] [--disable_http2]
+                 [--disable_https] [--https_port HTTPS_PORT]
+                 [--letsencrypt_dir LETSENCRYPT_DIR]
                  [--letsencrypt_certbot LETSENCRYPT_CERTBOT]
-                 [--apache_dir APACHE_DIR] [--www_dir WWW_DIR]
-                 [--template_common TEMPLATE_COMMON]
+                 [--certbot_arguments CERTBOT_ARGUMENTS]
+                 [--apache_dir APACHE_DIR] [--apache_user APACHE_USER]
+                 [--www_dir WWW_DIR] [--template_common TEMPLATE_COMMON]
                  [--template_http TEMPLATE_HTTP]
                  [--template_https TEMPLATE_HTTPS] [--python_ver PYTHON_VER]
-                 [--virtualenv VIRTUALENV] [--project_path PROJECT_PATH]
-                 [--git_repo_path PROJECT_PATH] [--sqlite_path SQLITE_PATH]
-                 [--reinit]
+                 [--user USER] [--virtualenv VIRTUALENV]
+                 [--project_path PROJECT_PATH] [--git_repo_path PROJECT_PATH]
+                 [--sqlite_path SQLITE_PATH] [--reinit]
                  project domain
 
 positional arguments:
@@ -43,39 +46,59 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   --http_port HTTP_PORT
-                        HTTP port to use in apache config.
-  --https               Whether to create certificate from LetsEncrypt and
-                        start https apache virtual host.
+                        HTTP port to use in apache config. (default: 80)
+  --disable_http2       Whether to disable h2/h2c protocol in the apache
+                        config (default: False)
+  --disable_https       Whether to create certificate from LetsEncrypt and
+                        start https apache virtual host. (default: False)
   --https_port HTTPS_PORT
-                        HTTPS port to use in apache config.
+                        HTTPS port to use in apache config. (default: 443)
   --letsencrypt_dir LETSENCRYPT_DIR
-                        Where are LetsEncrypt certificates stored
+                        Where are LetsEncrypt certificates stored (default:
+                        /etc/letsencrypt/live/{domain})
   --letsencrypt_certbot LETSENCRYPT_CERTBOT
-                        Where is the LetsEncrypt certbot executable
+                        Where is the LetsEncrypt certbot executable (default:
+                        /opt/letsencrypt/certbot-auto)
+  --certbot_arguments CERTBOT_ARGUMENTS
+                        Additional arguments to pass to certbot (pass them the
+                        same way you would call certbot directly) (default: )
   --apache_dir APACHE_DIR
-                        Where are the Apache configs stored
-  --www_dir WWW_DIR     Where is the public www directory
+                        Where are the Apache configs stored (default:
+                        /etc/apache2/)
+  --apache_user APACHE_USER
+                        Apache user name (default: www-data)
+  --www_dir WWW_DIR     Where is the public www directory (default: /var/www/)
   --template_common TEMPLATE_COMMON
-                        Common template for apache config
+                        Common template for apache config (default:
+                        template_common.txt)
   --template_http TEMPLATE_HTTP
-                        Template specifically for HTTP virtual host
+                        Template specifically for HTTP virtual host (default:
+                        template_http.txt)
   --template_https TEMPLATE_HTTPS
-                        Template specifically for HTTPS virtual host
+                        Template specifically for HTTPS virtual host (default:
+                        template_https.txt)
   --python_ver PYTHON_VER
-                        Python version
+                        Python version to use for virtual environment
+                        (default: python3.4)
+  --user USER           Default linux user to assign the project to (default:
+                        dio)
   --virtualenv VIRTUALENV
                         Path to virtualenv, it gets created if it does not
-                        exist yet
+                        exist yet (default: /home/dio/.virtualenvs/{project}/)
   --project_path PROJECT_PATH
-                        Where to store the project
+                        Where to store the project (default: /opt/{project}/)
   --git_repo_path PROJECT_PATH
-                        Path to the git repo
+                        Path to the git repo (default:
+                        /opt/git/{project}.git/)
   --sqlite_path SQLITE_PATH
                         Include if you are using sqlite db in your django
                         project as it needs some permission changes after
-                        migration.
+                        migration. (default: None)
   --reinit              Whether to force recreating/redoing everything
+                        (default: False)
+
 ```
+
 
 ## License
 

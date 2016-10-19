@@ -13,9 +13,9 @@ def execute(command):
     return subprocess.check_output(command).decode('utf-8')
 
 
-def _change_perm(path):
-    shutil.chown(path, 'www-data', 'www-data')
-    return os.chmod(path, 0o770)
+def _change_perm(path, apache_user='www-data', permission=0o770):
+    shutil.chown(path, apache_user, apache_user)
+    return os.chmod(path, permission)
 
 
 def git_unlock(**args):
@@ -60,7 +60,7 @@ def create_www_dirs(**args):
     var_www = '{www_dir}/{project}'.format(**args)
     if args['reinit'] or not os.path.exists('{www_dir}/{project}'.format(**args)):
         os.makedirs(var_www, exist_ok=True)
-        _change_perm(var_www)
+        _change_perm(var_www, args['apache_user'])
         return 'Created {} successfully'.format(var_www)
 
 
@@ -120,10 +120,10 @@ def migrate(**args):
     if args['sqlite_path']:
         parent_folder = os.path.split(args['sqlite_path'])[0]
         os.makedirs(parent_folder, exist_ok=True)
-        _change_perm(parent_folder)
+        _change_perm(parent_folder, args['apache_user'])
     _call_command('migrate', **args)
     if args['sqlite_path']:
-        _change_perm(args['sqlite_path'])
+        _change_perm(args['sqlite_path'], args['apache_user'])
     return 'Successfully migrated the db'
 
 '''Collects static resources from django
@@ -134,7 +134,7 @@ def collectstatic(**args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--http_port', action='store', dest='http_port', default='80',
                         help='HTTP port to use in apache config.')
@@ -147,6 +147,8 @@ if __name__ == "__main__":
     parser.add_argument('--letsencrypt_certbot', action='store', dest='letsencrypt_certbot', default='/opt/letsencrypt/certbot-auto', help='Where is the LetsEncrypt certbot executable')
     parser.add_argument('--certbot_arguments', action='store', dest='certbot_arguments', default='', help='Additional arguments to pass to certbot (pass them the same way you would call certbot directly)')
     parser.add_argument('--apache_dir', action='store', dest='apache_dir', default='/etc/apache2/', help='Where are the Apache configs stored')
+    parser.add_argument('--apache_user', action='store', dest='apache_user', default='www-data',
+                        help='Apache user name')
     parser.add_argument('--www_dir', action='store', dest='www_dir', default='/var/www/',
                         help='Where is the public www directory')
     
