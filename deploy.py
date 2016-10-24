@@ -121,6 +121,7 @@ def migrate(**args):
         parent_folder = os.path.split(args['sqlite_path'])[0]
         os.makedirs(parent_folder, exist_ok=True)
         _change_perm(parent_folder, args['apache_user'])
+    _call_command('makemigrations', **args)
     _call_command('migrate', **args)
     if args['sqlite_path']:
         _change_perm(args['sqlite_path'], args['apache_user'])
