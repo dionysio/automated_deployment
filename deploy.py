@@ -6,6 +6,7 @@ import subprocess
 import shutil
 import shlex
 
+script_path = os.path.realpath(__file__)
 
 def execute(command):
     if isinstance(command, str):
@@ -69,6 +70,7 @@ def create_www_dirs(**args):
 def create_apache_configs(**args):
     args['virtualenv'] += '/lib/{python_ver}/site-packages'.format(**args)
     created_configs = []
+    os.chdir(script_path)
     for template_filename, template_name in ((args['template_common'], 'common'), (args['template_http'], 'http'), (args['template_https'], 'https')):
         config_filename = '{}/sites-available/{}_{}.conf'.format(args['apache_dir'], args['project'], template_name)
         if args['reinit']:
