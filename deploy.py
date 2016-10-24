@@ -161,7 +161,7 @@ if __name__ == "__main__":
     parser.add_argument('--user', action='store', dest='user', default='dio', help='Default linux user to assign the project to')
     parser.add_argument('--virtualenv', action='store', dest='virtualenv', default='/home/dio/.virtualenvs/{project}/', help='Path to virtualenv, it gets created if it does not exist yet')
     parser.add_argument('--project_path', action='store', dest='project_path', default='/opt/{project}/', help='Where to store the project')
-    parser.add_argument('--git_repo_path', action='store', dest='project_path', default='/opt/git/{project}.git/',
+    parser.add_argument('--git_repo_path', action='store', dest='git_repo_path', default='/opt/git/{project}.git/',
                         help='Path to the git repo')
     parser.add_argument('--sqlite_path', action='store', dest='sqlite_path', help='Include if you are using sqlite db in your django project as it needs some permission changes after migration.')
 
