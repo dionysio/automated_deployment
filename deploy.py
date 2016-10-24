@@ -6,8 +6,8 @@ import subprocess
 import shutil
 import shlex
 
-script_path = os.path.dirname(__file__)
-
+script_path = os.path.dirname(os.path.realpath(__file__))
+print(script_path)
 def execute(command):
     if isinstance(command, str):
         command = shlex.split(command)
