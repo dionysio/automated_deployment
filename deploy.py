@@ -152,9 +152,9 @@ if __name__ == "__main__":
     parser.add_argument('--www_dir', action='store', dest='www_dir', default='/var/www/',
                         help='Where is the public www directory')
     
-    parser.add_argument('--template_common', action='store', dest='template_common', default='template_common.txt', help='Common template for apache config')
-    parser.add_argument('--template_http', action='store', dest='template_http', default='template_http.txt', help='Template specifically for HTTP virtual host')
-    parser.add_argument('--template_https', action='store', dest='template_https', default='template_https.txt', help='Template specifically for HTTPS virtual host')
+    parser.add_argument('--template_common', action='store', dest='template_common', default='./template_common.txt', help='Common template for apache config')
+    parser.add_argument('--template_http', action='store', dest='template_http', default='./template_http.txt', help='Template specifically for HTTP virtual host')
+    parser.add_argument('--template_https', action='store', dest='template_https', default='./template_https.txt', help='Template specifically for HTTPS virtual host')
 
 
     parser.add_argument('--python_ver', action='store', dest='python_ver', default='python3.4', help='Python version to use for virtual environment')
