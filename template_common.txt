@@ -1,5 +1,5 @@
-ServerName www.{domain}
-ServerAlias {domain}
+ServerName {domain}
+ServerAlias www.{domain}
 WSGIProcessGroup {domain}
 WSGIScriptAlias / {www_dir}/{project}/wsgi.py
 
