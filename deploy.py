@@ -114,9 +114,9 @@ def letsencrypt_https(**args):
 '''Calls django management command
 '''
 def _call_command(command, **args):
-    manage = '{project_path}/_manage.py'
+    manage = '{project_path}/_manage.py'.format(**args)
     if not os.path.exists(manage):
-        manage = '{project_path}/manage.py'
+        manage = '{project_path}/manage.py'.format(**args)
     return execute('{virtualenv}/bin/python {manage} {command} --no-input'.format(command=command, manage=manage, **args))
 
 
